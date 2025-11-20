@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FlashcardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProgressController;
 use Illuminate\Support\Facades\Route;
 
 // I define public routes that anyone can access
@@ -20,8 +21,8 @@ Route::middleware('guest')->group(function () {
 
 // I define routes that require authentication
 Route::middleware('auth')->group(function () {
-    Route::view('/review', 'review')->name('review');
-    Route::view('/progress', 'progress')->name('progress');
+    Route::get('/progress', [ProgressController::class, 'index'])->name('progress');
+    Route::post('/flashcards/{flashcard}/mark-known', [FlashcardController::class, 'markAsKnown'])->name('flashcards.mark-known');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
@@ -34,5 +35,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::delete('/languages/{language}', [AdminDashboardController::class, 'deleteLanguage'])->name('admin.languages.destroy');
     Route::post('/flashcards', [AdminDashboardController::class, 'storeFlashcard'])->name('admin.flashcards.store');
     Route::patch('/flashcards/{flashcard}', [AdminDashboardController::class, 'updateFlashcard'])->name('admin.flashcards.update');
+    Route::post('/flashcards/{flashcard}/toggle-known', [AdminDashboardController::class, 'toggleKnown'])->name('admin.flashcards.toggle-known');
     Route::delete('/flashcards/{flashcard}', [AdminDashboardController::class, 'deleteFlashcard'])->name('admin.flashcards.destroy');
 });

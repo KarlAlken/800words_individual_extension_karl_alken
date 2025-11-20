@@ -58,4 +58,10 @@ class User extends Authenticatable
     {
         return $this->role === 'user';
     }
+
+    // I get flashcards the user knows
+    public function knownFlashcards()
+    {
+        return $this->belongsToMany(Flashcard::class, 'user_flashcard');
+    }
 }

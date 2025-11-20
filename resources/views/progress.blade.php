@@ -17,7 +17,6 @@
     <nav>
       <a href="{{ route('home') }}">Learn</a>
       @if (auth()->check())
-        <a href="{{ route('review') }}">Review</a>
         <a href="{{ route('progress') }}">Progress</a>
         <a href="{{ route('account') }}">Account</a>
         @if (auth()->user()->isAdmin())
@@ -30,34 +29,18 @@
   </header>
 
 <main>
-  <h1>Your Progress</h1>
-  <p>Track your learning journey!</p>
-
-  <div style="max-width: 600px; margin: 30px auto;">
-    
-    <div style="background-color: #f9f9f9; border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
-      <h2>Overall Statistics</h2>
-      <p><strong>Total Words Learned:</strong> 277</p>
-      <p><strong>Days Studying:</strong> 12</p>
-    </div>
-
-    <div style="background-color: #f9f9f9; border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
-      <h2>Polish Progress</h2>
-      <p><strong>Words Known:</strong> 277 / 800</p>
-      
-      <div style="background-color: #ddd; border-radius: 10px; height: 30px; width: 100%; margin: 10px 0;">
-        <div style="background-color: #FF7400; border-radius: 10px; height: 30px; width: 35%; text-align: center; line-height: 30px; color: white; font-weight: bold;">
-          35%
-        </div>
-      </div>
-      
-      <p><strong>Cards Reviewed Today:</strong> 15</p>
-      <p><strong>Accuracy:</strong> 87%</p>
-    </div>
-
-    
-
-  </div>
+  <h1>My Progress</h1>
+  
+  <h2>Overall Stats</h2>
+  <p>Total words learned: {{ $totalWords }}</p>
+  <p>Days studying: {{ $daysStudying }}</p>
+  
+  @foreach ($languages as $language)
+  <h2>{{ $language['name'] }}</h2>
+  <p>Words known: {{ $language['wordsKnown'] }} out of {{ $language['targetWords'] }}</p>
+  <p>That's about {{ $language['percent'] }}%</p>
+  @endforeach
+  
 </main>
 
 <footer>

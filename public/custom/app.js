@@ -4,16 +4,21 @@ const flashcardSection = document.getElementById("flashcard-section");
 const cardText = document.getElementById("cardText");
 const flipBtn = document.getElementById("flip-btn");
 const nextBtn = document.getElementById("next-btn");
+const markKnownForm = document.getElementById("mark-known-form");
+const markKnownBtn = document.getElementById("mark-known-btn");
 
 let deck = [];
+let knownIds = [];
 let currentCard = -1;
 let showingTranslation = false;
 
 if (flashcardSection) {
   try {
     deck = JSON.parse(flashcardSection.dataset.flashcards || "[]");
+    knownIds = JSON.parse(flashcardSection.dataset.knownIds || "[]");
   } catch (error) {
     deck = [];
+    knownIds = [];
     console.error("Could not parse flashcard data", error);
   }
 }
@@ -37,6 +42,17 @@ function showRandomCard() {
   cardText.style.color = "#000";
   flipBtn.textContent = "Show Translation";
   showingTranslation = false;
+
+  // I update the mark known form action
+  if (markKnownForm && card.id) {
+    const isKnown = knownIds.includes(card.id);
+    if (isKnown) {
+      markKnownForm.style.display = "none";
+    } else {
+      markKnownForm.action = `/flashcards/${card.id}/mark-known`;
+      markKnownForm.style.display = "inline-block";
+    }
+  }
 }
 
 function flipCard() {

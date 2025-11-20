@@ -18,7 +18,6 @@
     <nav>
       <a href="{{ route('home') }}">Learn</a>
       @if (auth()->check())
-        <a href="{{ route('review') }}">Review</a>
         <a href="{{ route('progress') }}">Progress</a>
         <a href="{{ route('account') }}">Account</a>
         @if (auth()->user()->isAdmin())

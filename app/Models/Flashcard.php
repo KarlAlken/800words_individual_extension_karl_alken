@@ -19,4 +19,10 @@ class Flashcard extends Model
     {
         return $this->belongsTo(Language::class);
     }
+
+    // I get users who know this flashcard
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_flashcard');
+    }
 }

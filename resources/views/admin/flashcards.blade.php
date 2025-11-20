@@ -41,6 +41,7 @@
         <thead>
           <tr>
             <th>Actions</th>
+            <th>Known</th>
             <th>Language</th>
             <th>Word / Phrase</th>
             <th>Translation</th>
@@ -62,6 +63,14 @@
                 <button class="button button-sm button-danger" form="delete-flashcard-{{ $flashcard->id }}">Delete</button>
               </td>
               <td>
+                <form method="POST" action="{{ route('admin.flashcards.toggle-known', $flashcard) }}" style="display: inline;">
+                  @csrf
+                  <input type="checkbox" 
+                         onchange="this.form.submit()" 
+                         {{ in_array($flashcard->id, $knownIds ?? []) ? 'checked' : '' }}>
+                </form>
+              </td>
+              <td>
                 <select name="language_id" form="update-flashcard-{{ $flashcard->id }}">
                   @foreach ($languages as $language)
                     <option value="{{ $language->id }}" {{ $flashcard->language_id == $language->id ? 'selected' : '' }}>
@@ -79,7 +88,7 @@
             </tr>
           @empty
             <tr>
-              <td colspan="4">No flashcards yet.</td>
+              <td colspan="5">No flashcards yet.</td>
             </tr>
           @endforelse
         </tbody>
