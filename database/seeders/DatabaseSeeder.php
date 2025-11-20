@@ -18,11 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             LanguageSeeder::class,
             FlashcardSeeder::class,
-        ]);
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            AdminUserSeeder::class,
+            RegularUserSeeder::class,
         ]);
     }
 }

@@ -7,6 +7,40 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## 800Words - Language Learning Application
+
+A simple Laravel-based flashcard application for language learning.
+
+## Setup Instructions
+
+1. Clone the repository
+2. Install dependencies: `composer install`
+3. Copy `.env.example` to `.env` and configure your database
+4. Generate application key: `php artisan key:generate`
+5. Run migrations: `php artisan migrate`
+6. Seed the database: `php artisan db:seed`
+
+## Login Credentials
+
+After running the seeders, you can log in with:
+
+**Admin User:**
+- Email: `admin@800words.com`
+- Password: `password`
+
+**Regular User:**
+- Email: `user@800words.com`
+- Password: `password`
+
+## Features
+
+- User authentication with roles (admin/user)
+- Language management (admin only)
+- Flashcard management (admin only)
+- Learn flashcards by language
+- Mark words as known
+- Track learning progress
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
