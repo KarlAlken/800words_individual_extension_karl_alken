@@ -16,7 +16,7 @@ class FlashcardController extends Controller
             ->orderBy('term')
             ->get();
 
-        // I get known flashcard IDs if user is logged in
+        // get known flashcard IDs if user is logged in
         $knownIds = [];
         if (auth()->check()) {
             $knownIds = auth()->user()->knownFlashcards()->get()->pluck('id')->toArray();
@@ -29,7 +29,7 @@ class FlashcardController extends Controller
         ]);
     }
 
-    // I mark a flashcard as known
+    // mark flashcard as known
     public function markAsKnown(Flashcard $flashcard): RedirectResponse
     {
         $user = auth()->user();
@@ -37,10 +37,10 @@ class FlashcardController extends Controller
             return redirect()->route('account');
         }
 
-        // I attach the flashcard to user's known flashcards
+        // add flashcard to user's known flashcards
         $user->knownFlashcards()->syncWithoutDetaching([$flashcard->id]);
 
-        // I redirect back to the language flashcards page
+        // redirect back to flashcards page
         $language = $flashcard->language;
         return redirect()->route('languages.flashcards', $language)->with('success', 'Word marked as known!');
     }

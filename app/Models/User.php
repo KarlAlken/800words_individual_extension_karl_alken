@@ -47,19 +47,19 @@ class User extends Authenticatable
         ];
     }
 
-    // I check if the user is an admin
+    // check if user is admin
     public function isAdmin()
     {
         return $this->role === 'admin';
     }
 
-    // I check if the user is a regular user
+    // check if user is regular user
     public function isUser()
     {
         return $this->role === 'user';
     }
 
-    // I get flashcards the user knows
+    // get flashcards user knows
     public function knownFlashcards()
     {
         return $this->belongsToMany(Flashcard::class, 'user_flashcard');

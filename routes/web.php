@@ -7,26 +7,26 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProgressController;
 use Illuminate\Support\Facades\Route;
 
-// I define public routes that anyone can access
+// public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/languages/{language}/flashcards', [FlashcardController::class, 'show'])->name('languages.flashcards');
 
-// I define account route (accessible to everyone, shows different content based on auth status)
+// account route
 Route::get('/account', [AuthController::class, 'showLogin'])->name('account');
 
-// I define login route for guests only
+// login route
 Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
 
-// I define routes that require authentication
+// routes that need login
 Route::middleware('auth')->group(function () {
     Route::get('/progress', [ProgressController::class, 'index'])->name('progress');
     Route::post('/flashcards/{flashcard}/mark-known', [FlashcardController::class, 'markAsKnown'])->name('flashcards.mark-known');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-// I define admin routes that require admin role
+// admin routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('admin');
     Route::get('/flashcards', [AdminDashboardController::class, 'flashcards'])->name('admin.flashcards.index');

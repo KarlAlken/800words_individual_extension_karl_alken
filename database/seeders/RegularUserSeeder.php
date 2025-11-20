@@ -13,7 +13,7 @@ class RegularUserSeeder extends Seeder
      */
     public function run(): void
     {
-        // I create a regular user for testing
+        // create regular user
         User::create([
             'name' => 'Test User',
             'email' => 'user@800words.com',

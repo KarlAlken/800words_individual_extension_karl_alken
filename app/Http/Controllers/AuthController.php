@@ -7,29 +7,28 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    // I show the login form
+    // show the login form
     public function showLogin()
     {
         return view('account');
     }
 
-    // I handle the login form submission
+    // handle login
     public function login(Request $request)
     {
-        // I get email and password from the request
+        // get email and password from request
         $credentials = $request->only(['email', 'password']);
 
-        // I try to authenticate the user
+        // try to login
         if (auth()->attempt($credentials)) {
-            // I redirect to home with success message
             return redirect()->route('home')->with('success', 'You are now logged in!');
         }
 
-        // I redirect back with error if login fails
+        // login failed
         return redirect()->route('account')->with('error', 'Invalid email or password.');
     }
 
-    // I handle logout
+    // handle logout
     public function logout()
     {
         auth()->logout();

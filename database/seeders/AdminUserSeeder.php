@@ -13,7 +13,7 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        // I create an admin user
+        // create admin user
         User::create([
             'name' => 'Admin',
             'email' => 'admin@800words.com',

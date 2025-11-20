@@ -43,7 +43,7 @@ function showRandomCard() {
   flipBtn.textContent = "Show Translation";
   showingTranslation = false;
 
-  // I update the mark known form action
+  // update mark known form
   if (markKnownForm && card.id) {
     const isKnown = knownIds.includes(card.id);
     if (isKnown) {
