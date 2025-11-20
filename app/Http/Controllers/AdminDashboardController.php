@@ -11,10 +11,10 @@ use Illuminate\View\View;
 
 class AdminDashboardController extends Controller
 {
-    // check if user is admin
+    // check iff user is admin 213
     public function __construct()
     {
-        // make sure user is logged in and is admin
+        // make suree user is logged in and is admin
         if (!auth()->check() || !auth()->user()->isAdmin()) {
             abort(403, 'You must be an admin to access this page.');
         }
