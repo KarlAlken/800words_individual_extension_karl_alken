@@ -6,6 +6,13 @@
   <title>800Words - Account</title>
   <link rel="stylesheet" href="{{ asset('custom/styles.css') }}">
   <script defer src="{{ asset('custom/app.js') }}"></script>
+  <script>
+    function quickLogin(email, password) {
+      document.getElementById('email').value = email;
+      document.getElementById('password').value = password;
+      document.getElementById('login-form').submit();
+    }
+  </script>
 
 </head>
 
@@ -45,7 +52,7 @@
     @if (!auth()->check())
       <section>
         <h2>Log In</h2>
-        <form method="POST" action="{{ route('login') }}">
+        <form id="login-form" method="POST" action="{{ route('login') }}">
           @csrf
           <label for="email">Email</label><br>
           <input id="email" name="email" type="email" required><br><br>
@@ -53,6 +60,12 @@
           <input id="password" name="password" type="password" required><br><br>
           <button class="button" type="submit">Log in</button>
         </form>
+        
+        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+          <p style="font-size: 0.9em; color: #666;">Quick login (for testing):</p>
+          <button class="button" onclick="quickLogin('admin@800words.com', 'password')" style="margin-right: 10px;">Login as Admin</button>
+          <button class="button" onclick="quickLogin('user@800words.com', 'password')">Login as User</button>
+        </div>
       </section>
     @else
       {{-- I show account info if user is logged in --}}
