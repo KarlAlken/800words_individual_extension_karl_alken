@@ -7,16 +7,16 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    // show the login form
+    // shw the login form
     public function showLogin()
     {
         return view('account');
     }
 
-    // handle login
+    // handle login lets go
     public function login(Request $request)
     {
-        // get email and password from request
+        // Get email and password from request ******
         $credentials = $request->only(['email', 'password']);
 
         // try to login
