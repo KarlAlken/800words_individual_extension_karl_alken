@@ -17,10 +17,16 @@
     </a>
     <nav>
       <a href="{{ route('home') }}">Learn</a>
-      <a href="{{ route('review') }}">Review</a>
-      <a href="{{ route('progress') }}">Progress</a>
-      <a href="{{ route('account') }}">Account</a>
-      <a href="{{ route('admin') }}">Admin</a>
+      @if (auth()->check())
+        <a href="{{ route('review') }}">Review</a>
+        <a href="{{ route('progress') }}">Progress</a>
+        <a href="{{ route('account') }}">Account</a>
+        @if (auth()->user()->isAdmin())
+          <a href="{{ route('admin') }}">Admin</a>
+        @endif
+      @else
+        <a href="{{ route('account') }}">Log In</a>
+      @endif
     </nav>
   </header>
 
