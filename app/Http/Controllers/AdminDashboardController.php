@@ -35,10 +35,11 @@ class AdminDashboardController extends Controller
     public function flashcards(): View
     {
         $languages = Language::orderBy('name')->get();
+        // I show 20 flashcards per page
         $flashcards = Flashcard::with('language')
             ->orderBy('language_id')
             ->orderBy('term')
-            ->get();
+            ->paginate(20);
 
         // get known flashcard IDs for current user
         $user = auth()->user();

@@ -94,5 +94,9 @@
         </tbody>
       </table>
     </div>
+
+    <div class="pagination">
+      {{ $flashcards->links() }}
+    </div>
   </section>
 @endsection
