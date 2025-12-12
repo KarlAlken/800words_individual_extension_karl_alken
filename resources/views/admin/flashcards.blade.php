@@ -6,7 +6,7 @@
   <section class="card admin-card">
     <h2>Add a Flashcard</h2>
 
-    <form method="POST" action="{{ route('admin.flashcards.store') }}" class="admin-form admin-form-grid">
+    <form method="POST" action="{{ route('admin.flashcards.store') }}" class="admin-form admin-form-grid filter-inline">
       @csrf
 
       <label>Language
@@ -36,67 +36,46 @@
 
   <section class="card admin-card">
     <h2>Flashcards</h2>
-    <div class="table-wrapper">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Actions</th>
-            <th>Known</th>
-            <th>Language</th>
-            <th>Word / Phrase</th>
-            <th>Translation</th>
-          </tr>
-        </thead>
-        <tbody>
-          @forelse ($flashcards as $flashcard)
-            <form id="update-flashcard-{{ $flashcard->id }}" method="POST" action="{{ route('admin.flashcards.update', $flashcard) }}">
-              @csrf
-              @method('PATCH')
-            </form>
-            <form id="delete-flashcard-{{ $flashcard->id }}" method="POST" action="{{ route('admin.flashcards.destroy', $flashcard) }}" onsubmit="return confirm('Delete this flashcard?');">
-              @csrf
-              @method('DELETE')
-            </form>
-            <tr>
-              <td class="table-actions">
-                <button class="button button-sm" form="update-flashcard-{{ $flashcard->id }}">Update</button>
-                <button class="button button-sm button-danger" form="delete-flashcard-{{ $flashcard->id }}">Delete</button>
-              </td>
-              <td>
-                <form method="POST" action="{{ route('admin.flashcards.toggle-known', $flashcard) }}" style="display: inline;">
-                  @csrf
-                  <input type="checkbox" 
-                         onchange="this.form.submit()" 
-                         {{ in_array($flashcard->id, $knownIds ?? []) ? 'checked' : '' }}>
-                </form>
-              </td>
-              <td>
-                <select name="language_id" form="update-flashcard-{{ $flashcard->id }}">
-                  @foreach ($languages as $language)
-                    <option value="{{ $language->id }}" {{ $flashcard->language_id == $language->id ? 'selected' : '' }}>
-                      {{ $language->flag_emoji }} {{ $language->name }}
-                    </option>
-                  @endforeach
-                </select>
-              </td>
-              <td>
-                <input form="update-flashcard-{{ $flashcard->id }}" name="term" type="text" value="{{ $flashcard->term }}" required>
-              </td>
-              <td>
-                <input form="update-flashcard-{{ $flashcard->id }}" name="translation" type="text" value="{{ $flashcard->translation }}" required>
-              </td>
-            </tr>
-          @empty
-            <tr>
-              <td colspan="5">No flashcards yet.</td>
-            </tr>
-          @endforelse
-        </tbody>
-      </table>
-    </div>
 
-    <div class="pagination">
-      {{ $flashcards->links() }}
+    @php
+      $filtersActive = !empty($selectedLanguageId) || !empty($searchTerm) || (($perPageChoice ?? '20') !== '20');
+    @endphp
+
+    <form id="flashcards-filter-form" method="GET" action="{{ route('admin.flashcards.index') }}" class="admin-form filter-inline filter-row" data-per-page-default="20">
+      <label>Filter by language
+        <select name="language_id">
+          <option value="">All languages</option>
+          @foreach ($languages as $language)
+            <option value="{{ $language->id }}" {{ ($selectedLanguageId ?? '') == $language->id ? 'selected' : '' }}>
+              {{ $language->flag_emoji }} {{ $language->name }}
+            </option>
+          @endforeach
+        </select>
+      </label>
+      <label>Search term / translation
+        <input type="text" name="search" value="{{ $searchTerm ?? '' }}" placeholder="Search...">
+      </label>
+      <label>Per page
+        <select name="per_page">
+          @foreach ($perPageOptions as $option)
+            <option value="{{ $option }}" {{ ($perPageChoice ?? '20') == $option ? 'selected' : '' }}>
+              {{ $option === 'all' ? 'All' : $option }}
+            </option>
+          @endforeach
+        </select>
+      </label>
+      <div class="filter-actions">
+        <a class="button button-sm button-compact {{ $filtersActive ? '' : 'button-disabled' }}"
+           id="flashcards-clear"
+           href="{{ route('admin.flashcards.index', ['per_page' => 20]) }}"
+           @unless ($filtersActive) aria-disabled="true" tabindex="-1" @endunless>
+          Clear
+        </a>
+      </div>
+    </form>
+
+    <div id="flashcards-data">
+      @include('admin.flashcards_list')
     </div>
   </section>
 @endsection

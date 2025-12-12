@@ -6,7 +6,7 @@
   <section class="card admin-card">
     <h2>Add a Language</h2>
 
-    <form method="POST" action="{{ route('admin.languages.store') }}" class="admin-form admin-form-grid">
+    <form method="POST" action="{{ route('admin.languages.store') }}" class="admin-form admin-form-grid filter-inline">
       @csrf
       <label>Name
         <input name="name" type="text" required value="{{ old('name') }}">
@@ -28,6 +28,40 @@
 
   <section class="card admin-card">
     <h2>Languages</h2>
+
+    @php
+      $languageFiltersActive = !empty($searchTerm) || (($perPageChoice ?? '20') !== '20');
+    @endphp
+
+    <form method="GET" action="{{ route('admin') }}" class="admin-form filter-inline filter-row">
+      <label>Search language
+        <input type="text" name="search" value="{{ $searchTerm ?? '' }}" placeholder="Search..." onchange="this.form.submit()">
+      </label>
+      <label>Per page
+        <select name="per_page" onchange="this.form.submit()">
+          @foreach ($perPageOptions as $option)
+            <option value="{{ $option }}" {{ ($perPageChoice ?? '20') == $option ? 'selected' : '' }}>
+              {{ $option === 'all' ? 'All' : $option }}
+            </option>
+          @endforeach
+        </select>
+      </label>
+      <div class="filter-actions">
+        <a class="button button-sm button-compact {{ $languageFiltersActive ? '' : 'button-disabled' }}"
+           href="{{ route('admin', ['per_page' => 20]) }}"
+           @unless ($languageFiltersActive) aria-disabled="true" tabindex="-1" @endunless>
+          Clear
+        </a>
+      </div>
+    </form>
+
+    <div class="pagination pagination-top">
+      <span class="muted">
+        Showing {{ $languages->firstItem() ?? 0 }}-{{ $languages->lastItem() ?? 0 }} of {{ $languages->total() }} languages
+      </span>
+      {{ $languages->links() }}
+    </div>
+
     <div class="table-wrapper">
       <table class="admin-table">
         <thead>
@@ -51,7 +85,7 @@
             </form>
             <tr>
               <td class="table-actions">
-                <button class="button button-sm" form="update-language-{{ $language->id }}">Update</button>
+                <button class="button button-sm button-muted" form="update-language-{{ $language->id }}">Update</button>
                 <button class="button button-sm button-danger" form="delete-language-{{ $language->id }}">Delete</button>
               </td>
               <td>
